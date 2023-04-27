@@ -60,7 +60,7 @@ const Widget = () => {
           ml="1rem"
           // href={`${token?.demo_url}` || "#"}
           style={{
-            width: "500px",
+            width: "900px",
             overflowX: "hidden",
             display: "flex",
             justifyContent: "space-evenly",
@@ -69,7 +69,7 @@ const Widget = () => {
         >
           <Box>
             <Image
-              style={{ width: "2rem", borderRadius: "50%" }}
+              style={{ width: "150px", borderRadius: "50%" }}
               src={token?.image}
               alt={`${token.name} image url`}
             />
@@ -81,7 +81,7 @@ const Widget = () => {
             color="brand.primary"
             ml="0.5rem"
             as="span"
-            style={{ maxWidth: "150px", width: "150px", overflowX: "hidden" }}
+            style={{ maxWidth: "250px", width: "250px", overflowX: "hidden" }}
           >
             {token.name}
           </Text>
