@@ -8,6 +8,7 @@ import { store } from './state/store';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from './config';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
