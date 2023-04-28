@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   FormControl,
   FormLabel,
   Select,
   Input,
-  Button,
+  Button
 } from "@chakra-ui/react";
-
+import { SmartdeployerCoswasm } from "../../sdk/web3/index";
 const StandardToken = () => {
   const navigate = useNavigate();
 
@@ -17,8 +17,15 @@ const StandardToken = () => {
     tokenName: "",
     symbol: "",
     decimal: "",
-    totalSupply: "",
+    totalSupply: ""
   });
+  const [wasmFile, setWasmFile] = useState(null);
+  const [wasmByteArray, setWasmByteArray] = useState(null);
+
+  const onFileChange = (e) => {
+    if (!e.target.files) return;
+    setWasmFile(e.target.files[0]);
+  };
 
   const handleTokenType = (e) => {
     const token = e.target.value;
@@ -35,8 +42,45 @@ const StandardToken = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (wasmFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          if (!e.target?.result) return;
+          const byteArray = new Uint8Array(e.target.result);
+          setWasmByteArray(byteArray);
+        } catch (error) {}
+      };
+      reader.readAsArrayBuffer(wasmFile);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wasmFile]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { symbol, tokenName, decimal, totalSupply } = formData;
+    try {
+      // console.log({ wasmFile })
+      await SmartdeployerCoswasm(
+        wasmByteArray,
+        tokenName,
+        symbol,
+        decimal,
+        totalSupply
+      );
+      //await SmartInstantiate()
+    } catch (err) {
+      console.log({ err });
+    }
+
+    // const reader = new FileReader()
+    // reader.onload = (e) => {
+    //   try {
+    //     if (!e.target?.result) return
+    //     const byteArray = new Uint8Array(e.target.result)
+    //   } catch (error) { }
+    // }
     // console.log(formData);
   };
 
@@ -111,6 +155,32 @@ const StandardToken = () => {
             }
           />
         </FormControl>
+        <div>
+          <a
+            href="https://drive.google.com/uc?id=1ui6UGTzvTlwiFZ-9b_aP0ACK78MxLqU3&export=download"
+            download="my_magic_file"
+          >
+            <Button
+              bg="brand.primary"
+              color="white"
+              p="1rem"
+              mr="3rem"
+              borderRadius="15px"
+              _hover={{
+                bg: "brand.primary",
+                opacity: "0.8",
+                color: "black"
+              }}
+            >
+              download magic file
+            </Button>
+          </a>
+        </div>
+        <div style={{ height: "10px" }} />
+
+        <FormControl>
+          <Input type="file" onChange={(e) => onFileChange(e)} />
+        </FormControl>
 
         <Box my="1.5rem" textAlign="center">
           <Button
@@ -123,7 +193,7 @@ const StandardToken = () => {
             _hover={{
               bg: "brand.primary",
               opacity: "0.8",
-              color: "black",
+              color: "black"
             }}
           >
             Create Token
