@@ -5,6 +5,7 @@ nvm use 16 or 16.18.0
 
 In the project directory, you can run:
 
+### `npm install`
 ### `npm start`
 
 Runs the app in the development mode.\
