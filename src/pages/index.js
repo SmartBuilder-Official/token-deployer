@@ -8,6 +8,9 @@ import SmartBuidl from "./smartbuidl/SmartBuidl";
 import SmartMarketplace from "./smartbuidl/SmartMarketplace";
 import SmartNFTs from "./smartbuidl/SmartNFTs";
 import SmartStaking from "./smartbuidl/SmartStaking";
+import Launchpad from "./smartsales/Launchpad";
+import Upcoming from "./smartsales/Upcoming";
+import Favourites from "./smartsales/Favourites";
 
 export {
   Home,
@@ -20,4 +23,7 @@ export {
   SmartMarketplace,
   SmartNFTs,
   SmartStaking,
+  Launchpad,
+  Upcoming,
+  Favourites
 };
