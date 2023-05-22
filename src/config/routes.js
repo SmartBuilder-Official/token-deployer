@@ -1,6 +1,11 @@
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
-import { SmartTokenLayout, ErrorPage, SuccessfulPage } from '../components';
+import {
+  SmartTokenLayout,
+  ErrorPage,
+  SuccessfulPage,
+  SmartsalesLayout,
+} from '../components';
 import {
   Home,
   StandardToken,
@@ -12,6 +17,9 @@ import {
   SmartMarketplace,
   SmartNFTs,
   SmartStaking,
+  Launchpad,
+  Upcoming,
+  Favourites,
 } from '../pages';
 
 export function Routes() {
@@ -32,6 +40,15 @@ export function Routes() {
         { path: 'error', element: <ErrorPage /> },
         { path: 'success', element: <SuccessfulPage /> },
       ],
+    },
+    {
+      path: '/smartsales',
+      element: <SmartsalesLayout />,
+      children: [
+        { element: <Launchpad />, index: true },
+        { path: 'upcoming', element: <Upcoming /> },
+        { path: 'favourites', element: <Favourites /> }
+    ],
     },
     {
       path: '/smartbuidl',
