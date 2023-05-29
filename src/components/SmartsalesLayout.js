@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Box, Heading, Link } from '@chakra-ui/react';
 
@@ -7,9 +7,24 @@ const SmartsalesLayout = () => {
     fontWeight: isActive ? '600' : '500',
     borderBottom: isActive ? '4px solid #FC8B23' : 'none',
   });
+
+  const [display, setDisplay] = useState(false);
+  const location = window.location.pathname;
+
+  useEffect(() => {
+    if (
+      location === '/smartsales/launchpad' ||
+      location === '/smartsales/upcoming' ||
+      location === '/smartsales/favourites'
+    ) {
+      setDisplay(true);
+    } else {
+      setDisplay(false);
+    }
+  }, [location]);
   return (
     <>
-      <Box>
+      <Box className={display === true ? 'd-block' : 'd-none'}>
         <Heading
           as="h4"
           textAlign="center"
@@ -29,9 +44,8 @@ const SmartsalesLayout = () => {
             fontSize="18px"
             color="#000"
             py="0.7rem"
-            to="/smartsales"
+            to="/smartsales/launchpad"
             _hover={{ textDecoration: 'none' }}
-            end
           >
             All launchpads
           </Link>

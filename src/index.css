@@ -37,3 +37,11 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: #fc8b15;
 }
+
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
+}

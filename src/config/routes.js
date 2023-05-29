@@ -20,6 +20,7 @@ import {
   Launchpad,
   Upcoming,
   Favourites,
+  ListToken
 } from '../pages';
 
 export function Routes() {
@@ -45,9 +46,11 @@ export function Routes() {
       path: '/smartsales',
       element: <SmartsalesLayout />,
       children: [
-        { element: <Launchpad />, index: true },
+        { element: <ListToken />, index: true },
+        { path: 'launchpad', element: <Launchpad /> },
         { path: 'upcoming', element: <Upcoming /> },
-        { path: 'favourites', element: <Favourites /> }
+        { path: 'favourites', element: <Favourites /> },
+        
     ],
     },
     {

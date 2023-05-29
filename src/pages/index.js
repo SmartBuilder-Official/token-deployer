@@ -11,6 +11,7 @@ import SmartStaking from "./smartbuidl/SmartStaking";
 import Launchpad from "./smartsales/Launchpad";
 import Upcoming from "./smartsales/Upcoming";
 import Favourites from "./smartsales/Favourites";
+import ListToken from "./smartsales/ListToken";
 
 export {
   Home,
@@ -25,5 +26,6 @@ export {
   SmartStaking,
   Launchpad,
   Upcoming,
-  Favourites
+  Favourites,
+  ListToken
 };
