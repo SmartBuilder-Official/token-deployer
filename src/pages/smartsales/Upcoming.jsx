@@ -5,13 +5,11 @@ import avatar from '../../assets/avatar.png';
 import SocialIcons from '../../components/SocialIcons';
 import Favourite from '../../components/Favourite';
 import Notification from '../../components/Notification';
-import { Cancelled } from './Cancelled';
 
 
 const Upcoming = () => {
   const navigate = useNavigate();
 
-  return <Cancelled />
   return (
     <Box
       mt='64px'
