@@ -73,7 +73,20 @@ const SidebarItem = [
     id: 4,
     image: sales,
     name: 'Smartsales',
-    path: '/smartsales',
+    subCategory: [
+      {
+        id: 1,
+        // image: ,
+        name: 'Create presale',
+        path: '/create-presale',
+      },
+      {
+        id: 2,
+        // image: ,
+        name: 'Join Presale',
+        path: '/join-presale',
+      },
+    ],
   },
   {
     id: 5,
@@ -85,7 +98,8 @@ const SidebarItem = [
     id: 6,
     image: tool,
     name: 'SmartBuild',
-    path: '/smartbuidl',
+    // path: '/smartbuidl',
+    text: 'Coming soon',
   },
   {
     id: 7,

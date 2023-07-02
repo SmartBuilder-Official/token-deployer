@@ -20,8 +20,11 @@ import {
   Launchpad,
   Upcoming,
   Favourites,
-  ListToken
+  ListToken,
 } from '../pages';
+
+import { Cancelled } from '../pages/smartsales/Cancelled';
+import Ongoing from '../pages/smartsales/Ongoing';
 
 export function Routes() {
   return useRoutes([
@@ -43,15 +46,19 @@ export function Routes() {
       ],
     },
     {
-      path: '/smartsales',
+      path: '/create-presale',
+      element: <ListToken />,
+    },
+    {
+      path: '/join-presale',
       element: <SmartsalesLayout />,
       children: [
-        { element: <ListToken />, index: true },
-        { path: 'launchpad', element: <Launchpad /> },
+        { element: <Launchpad />, index: true },
         { path: 'upcoming', element: <Upcoming /> },
         { path: 'favourites', element: <Favourites /> },
-        
-    ],
+        { path: 'cancelled', element: <Cancelled /> },
+        { path: 'ongoing', element: <Ongoing /> },
+      ],
     },
     {
       path: '/smartbuidl',
