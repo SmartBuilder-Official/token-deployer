@@ -63,7 +63,6 @@ const Sidebar = () => {
                         cursor="pointer"
                         bg={item.path === pathname && '#FC8B23'}
                       >
-                        {/* <Image boxSize="18px" src={item.image} alt={item.name} /> */}
                         <Text
                           ml="2rem"
                           color={item.path === pathname && 'white'}
