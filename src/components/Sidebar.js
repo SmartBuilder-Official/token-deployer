@@ -1,11 +1,19 @@
-import { Box, Image, List, ListItem, Switch, Text, UnorderedList } from '@chakra-ui/react';
+import { Box, Image, Img, List, ListItem, Switch, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import sun from '../assets/sun.png';
 import { SidebarItem } from '../constants/data';
+import arrowDown from '../assets/arrow-down.png'
+import { useState } from 'react';
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const [active, setActive] = useState(false)
+
+  const showMenu = () => {
+    setActive(!active)
+
+  }
 
   return (
     <Box
@@ -32,18 +40,17 @@ const Sidebar = () => {
                   alignItems="center"
                   flexWrap="wrap"
                   py="0.7rem"
+                  onClick={showMenu}
                   cursor="pointer"
                 >
                   <Image boxSize="18px" src={item.image} alt={item.name} />
                   <Text ml="2rem" color={item.path === pathname && 'white'}>
                     {item.name}
                   </Text>
-                  <Text ml="auto" as="small" color="brand.primary">
-                    {item.text}
-                  </Text>
+                  <Img src={arrowDown} ml='1rem' alt='arrow-down' />
                 </ListItem>
 
-                <UnorderedList>
+                <UnorderedList className={`${active ? 'd-block' : 'd-none'}`}>
                   {item.subCategory.map((item) => (
                     <NavLink key={item.id} to={item.path}>
                       <ListItem
