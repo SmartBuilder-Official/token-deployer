@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 // import * as nearAPI from 'near-api-js';
-import { Box, Button, Image } from "@chakra-ui/react";
-import logo from "../assets/Smart Builders Logo.png";
-import brandName from "../assets/Smart Builders Logo text.png";
-import archwayIcon from "../assets/archway.png";
+import { Box, Button, Image } from '@chakra-ui/react';
+import logo from '../assets/Smart Builders Logo.png';
+import brandName from '../assets/Smart Builders Logo text.png';
+import archwayIcon from '../assets/archway.png';
 // import connectors from '../utils/connectors'
-
-import { SigningArchwayClient } from "@archwayhq/arch3.js";
-import { GasPrice } from "@cosmjs/stargate";
-import UAuth from "@uauth/js";
+import UAuth from '@uauth/js';
+import { SigningArchwayClient } from '@archwayhq/arch3.js';
+// import BigNumber from 'bignumber.js';
+// import { useKeplr } from '@keplr-wallet/hooks';
+import chainInfo from '../utils/constantine.config';
 
 const Header = () => {
+  // unstoppable domain integration
   let isActive = false;
   const [udUser, setUdUser] = useState(null);
   const [accounts, setaccounts] = useState();
-  const [CosmWasmClient, setCosmWasmClient] = useState();
-  const [queryHandler, setqueryHandler] = useState();
-  const [gasPrice, setgasPrice] = useState();
+  // const [CosmWasmClient, setCosmWasmClient] = useState();
+  // const [queryHandler, setqueryHandler] = useState();
+  // const [gasPrice, setgasPrice] = useState();
 
   const [uDauth, setUDauth] = useState();
 
   useEffect(() => {
     // console.log(window.location);
     const uDauth = new UAuth({
-      clientID: "d33e635d-7c71-4e48-9376-5756cd2a018b",
+      clientID: 'd33e635d-7c71-4e48-9376-5756cd2a018b',
       redirectUri: `${window.location.href}`,
-      scope: "openid wallet email"
+      scope: 'openid wallet email',
     });
     setUDauth(uDauth);
   }, []);
@@ -64,76 +66,46 @@ const Header = () => {
   if (udUser) isActive = true;
   else isActive = false;
 
-  // boil fever net pottery hidden shiver small skin harsh chronic method vacant
+  // Archway integration  - Keplr wallet
+  useEffect(() => {
+    const connectToArchway = async () => {
+      if (!window.getOfflineSigner || !window.keplr) {
+        alert('Please install Keplr extension');
+      } else {
+        try {
+          await window.keplr.experimentalSuggestChain(chainInfo);
+          window.keplr.defaultOptions = { sign: { preferNoSetFee: true } };
+        } catch (error) {
+          alert('Failed to suggest the chain');
+          console.error(error);
+        }
+      }
+    };
 
-  const ChainInfo = {
-    chainId: "constantine-1",
-    chainName: "Constantine Testnet",
-    rpc: "https://rpc.constantine-1.archway.tech",
-    rest: "https://api.constantine-1.archway.tech",
-    stakeCurrency: {
-      coinDenom: "CONST",
-      coinMinimalDenom: "uconst",
-      coinDecimals: 6
-    },
-    bip44: { coinType: 118 },
-    bech32Config: {
-      bech32PrefixAccAddr: "archway",
-      bech32PrefixAccPub: "archwaypub",
-      bech32PrefixValAddr: "archwayvaloper",
-      bech32PrefixValPub: "archwayvaloperpub",
-      bech32PrefixConsAddr: "archwayvalcons",
-      bech32PrefixConsPub: "archwayvalconspub"
-    },
-    currencies: [
-      { coinDenom: "CONST", coinMinimalDenom: "uconst", coinDecimals: 6 }
-    ],
-    feeCurrencies: [
-      { coinDenom: "CONST", coinMinimalDenom: "uconst", coinDecimals: 6 }
-    ],
-    coinType: 118,
-    gasPriceStep: { low: 0, average: 0.1, high: 0.2 },
-    features: ["cosmwasm"]
+    connectToArchway();
+  }, []);
+
+  const connectKeplrWallet = async () => {
+    const chainId = chainInfo.chainId;
+    await window.keplr.enable(chainId);
+
+    const offlineSigner = window.keplr.getOfflineSigner(chainId);
+    const signingClient = await SigningArchwayClient.connectWithSigner(
+      chainInfo.rpc,
+      offlineSigner
+    );
+
+    const accounts = await offlineSigner.getAccounts();
+    // const destinationAddress = document.sendForm.recipient.value;
+
+    console.log(signingClient);
+    console.log(accounts);
+    // console.log(destinationAddress);
   };
 
-  async function connectKeplrWallet() {
-    if (window["keplr"]) {
-      if (window.keplr["experimentalSuggestChain"]) {
-        await window.keplr.experimentalSuggestChain(ChainInfo);
-        await window.keplr.enable(ChainInfo.chainId);
 
-        const offlineSigner = await window.keplr.getOfflineSigner(
-          ChainInfo.chainId
-        );
-
-        let gasPrice = GasPrice.fromString(
-          "0.002" + ChainInfo.currencies[0].coinMinimalDenom
-        );
-        setgasPrice(gasPrice);
-
-        let CosmWasmClient = await SigningArchwayClient.connectWithSigner(
-          ChainInfo.rpc,
-          offlineSigner,
-          { gasPrice: gasPrice }
-        );
-        setCosmWasmClient(CosmWasmClient);
-
-        // This async waits for the user to authorize your dapp
-        // it returns their account address only after permissions
-        // to read that address are granted
-        setaccounts(await offlineSigner.getAccounts());
-        // A less verbose reference to handle our queries
-        setqueryHandler(CosmWasmClient.queryClient.wasm.queryContractSmart);
-      } else {
-        alert("Error accessing experimental features, please update Keplr");
-      }
-    } else {
-      alert("Error accessing Keplr, please install Keplr");
-    }
-  }
-
-  const handleArchwayConnect = async () => {
-    await connectKeplrWallet();
+  const handleArchwayConnect = () => {
+    connectKeplrWallet();
   };
 
   return (
@@ -164,13 +136,13 @@ const Header = () => {
           color="white"
           borderRadius="15px"
           _hover={{
-            bg: "brand.primary",
-            opacity: "0.8",
-            color: "black"
+            bg: 'brand.primary',
+            opacity: '0.8',
+            color: 'black',
           }}
           onClick={handleArchwayConnect}
         >
-          {accounts ? "Disconnect Wallet" : "Connect Wallet"}
+          {accounts ? 'Disconnect Wallet' : 'Connect Wallet'}
         </Button>
 
         <Button
@@ -180,17 +152,17 @@ const Header = () => {
           color="white"
           borderRadius="15px"
           _hover={{
-            bg: "brand.primary",
-            opacity: "0.8",
-            color: "black"
+            bg: 'brand.primary',
+            opacity: '0.8',
+            color: 'black',
           }}
           onClick={handleToggleConnect}
         >
-          {isActive ? "Logout" : "Login with Unstoppable"}
+          {isActive ? 'Logout' : 'Login with Unstoppable'}
         </Button>
       </Box>
       <Box>
-        <h3>Status -{udUser ? udUser.sub : ""}</h3>
+        <h3>Status -{udUser ? udUser.sub : ''}</h3>
       </Box>
     </Box>
   );
