@@ -3,7 +3,7 @@ import ChainInfo from './constantine.config.js';
 import { GasPrice } from "@cosmjs/stargate";
 import * as base64js from "base64-js";
 import Long from "long";
-import contractCw20 from "./contracts/cw20.wasm"
+import sbWasm from "./contracts/sb_archway_contract.wasm"
 
 export async function SmartdeployerCoswasm(contract, name, symbol, decimal, totalSupply) {
     await window.keplr.enable(ChainInfo.chainId);

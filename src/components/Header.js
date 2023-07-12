@@ -7,9 +7,8 @@ import archwayIcon from '../assets/archway.png';
 // import connectors from '../utils/connectors'
 import UAuth from '@uauth/js';
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
-// import BigNumber from 'bignumber.js';
-// import { useKeplr } from '@keplr-wallet/hooks';
-import chainInfo from '../utils/constantine.config';
+import { ArchwayClient } from '@archwayhq/arch3.js';
+import chainInfo from '../sdk/web3/constantine.config';
 
 const Header = () => {
   // unstoppable domain integration
@@ -103,9 +102,21 @@ const Header = () => {
     // console.log(destinationAddress);
   };
 
-
-  const handleArchwayConnect = () => {
+  const handleArchwayConnect = async () => {
     connectKeplrWallet();
+    const client = await ArchwayClient.connect(
+      'https://rpc.constantine.archway.tech'
+    );
+    const contractAddress =
+      'archway1ce97k929shkfzp633edt34hhv3uaqlkgsu3j4xqwjlg2fmg8y5hsw4lewj';
+    const msg = {
+      get_count: {},
+    };
+    const { count } = await client.queryContractSmart(contractAddress, msg);
+    console.log('Counter: ', count);
+
+    const validators = await client.tmClient.validatorsAll();
+    console.log(validators);
   };
 
   return (
